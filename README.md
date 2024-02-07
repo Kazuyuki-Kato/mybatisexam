@@ -3,6 +3,26 @@
 
 # 現状（2024/2/7にご質問の内容）
 ### HTTPステータス:500サーバーエラー（原因としてConnetionException）の解決
+- <2024/2/7　13：06追記>
+エラー箇所で下記のコンソールログが発生いたしました。
+少し長いので、画像でも共有いたします。
+# コードを転載している箇所
+![スクリーンショット (61)](https://github.com/Kazuyuki-Kato/mybatisexam/assets/154575590/f56ff078-93e8-458c-ab57-8bd2d82ca5df)
+# 上記のスクリーンショット上記に青文字で写っている「PlayerController.java:18」のINTERNAL LINEです。念のため共有いたします。
+![スクリーンショット (62)](https://github.com/Kazuyuki-Kato/mybatisexam/assets/154575590/da938f7c-d587-4828-a5cf-c066b8759d29)
+
+``` sh
+Caused by: java.net.ConnectException: Connection refused: no further information
+at java.base/sun.nio.ch.Net.pollConnect(Native Method) ~[na:na]
+at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672) ~[na:na]
+at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:547) ~[na:na]
+at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:602) ~[na:na]
+at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[na:na]
+at java.base/java.net.Socket.connect(Socket.java:633) ~[na:na]
+at com.mysql.cj.protocol.StandardSocketFactory.connect(StandardSocketFactory.java:153) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:62) ~[mysql-connector-j-8.3.0.jar:8.3.0]
+```
+
 →下記は実施済み。
 - MySQLサーバーが動作しているか<br>
 →SQLコンテナを開いた状態でsql>statusコマンドで実行ができていることも確認。<br>
