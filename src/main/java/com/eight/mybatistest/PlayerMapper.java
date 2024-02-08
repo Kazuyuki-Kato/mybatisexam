@@ -9,4 +9,7 @@ import java.util.List;
 public interface PlayerMapper {
     @Select("SELECT * FROM players ")
     List<Player> findAll();
+
+    @Select("SELECT * FROM players WHERE number LIKE CONCAT(#{id}, '%')")
+    List<Player> findByNumberStartingWith(int prefix);
 }
