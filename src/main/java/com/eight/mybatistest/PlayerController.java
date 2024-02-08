@@ -13,7 +13,7 @@ public class PlayerController {
         this.playerMapper = playerMapper;
     }
 
-    @GetMapping("/players")
+    @GetMapping("/player_list_database")
     public List<Player> findAll() {
         return playerMapper.findAll();
     }
