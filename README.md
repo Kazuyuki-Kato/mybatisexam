@@ -16,5 +16,8 @@ VALUES ('山岡泰輔',19,'広島県');
 INSERT INTO players (name,number,prefecture)
 VALUES ('宮城大弥',13,'沖縄県');
 ```
+- cURLでの確認
+  赤線部⇒HTTPステータスコード:200、Content-Type:Application/JSONを確認。
+  ![スクリーンショット (69)](https://github.com/Kazuyuki-Kato/mybatisexam/assets/154575590/ad7cfb61-c90b-4857-9443-acf7fdded4b9)
 
 
