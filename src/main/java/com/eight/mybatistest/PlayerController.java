@@ -1,6 +1,7 @@
 package com.eight.mybatistest;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class PlayerController {
     }
 
     @GetMapping("/player_list_database")
-    public List<Player> findAll() {
-        return playerMapper.findAll();
+    public List<Player> findByPlayers(@RequestParam int startsWith) {
+        return playerMapper.findByNumberStartingWith(startsWith);
     }
 }
