@@ -1,8 +1,7 @@
 package com.eight.mybatistest;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 @RestController
 public class PlayerController {
     private final PlayerService playerService;
@@ -10,7 +9,13 @@ public class PlayerController {
         this.playerService = playerService;
     }
     @GetMapping("/players/{id}")
-    public Player getPlayer(@PathVariable("id") int id) {
+    public Player getPlayer(@PathVariable("id") Integer id) {
         return playerService.findPlayer(id);
+    }
+
+    @PostMapping("/players")
+    public Player insert(@RequestBody PlayerRequest playerRequest) {
+        Player player = playerService.insert(playerRequest.getName(), playerRequest.getPosition(),playerRequest.getUniform_number(),playerRequest.getPrefecture());
+        return player;
     }
 }

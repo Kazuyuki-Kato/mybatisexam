@@ -2,8 +2,6 @@ package com.eight.mybatistest;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class PlayerService {
     private final PlayerMapper playerMapper;
@@ -12,7 +10,12 @@ public class PlayerService {
         this.playerMapper = playerMapper;
     }
 
-    public Player findPlayer(int id) {
+    public Player findPlayer(Integer id) {
         return this.playerMapper.findById(id).orElseThrow(() -> new PlayerNotFoundException("player not found"));
+    }
+    public Player insert(String name, String position, Integer uniform_number, String prefecture) {
+        Player player = new Player(name, position, uniform_number, prefecture);
+        playerMapper.insert(player);
+        return player;
     }
 }

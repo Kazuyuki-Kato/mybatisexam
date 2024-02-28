@@ -1,20 +1,29 @@
 package com.eight.mybatistest;
 
 public class Player {
-    private int id;
+    private Integer id;
     private String name;
     private String position;
     private int uniform_number;
     private String prefecture;
 
-    public Player(int id, String name, String position, int uniform_number, String prefecture) {
+    public Player(Integer id,String name, String position, Integer uniform_number, String prefecture) {
         this.id = id;
         this.name = name;
         this.position = position;
         this.uniform_number = uniform_number;
         this.prefecture = prefecture;
     }
-    public int getId() {
+
+    public Player(String name, String position, Integer uniform_number, String prefecture) {
+        this.id = null;
+        this.name = name;
+        this.position = position;
+        this.uniform_number = uniform_number;
+        this.prefecture = prefecture;
+    }
+
+    public Integer getId() {
         return id;
     }
     public String getName() {
@@ -23,7 +32,7 @@ public class Player {
     public String getPosition() {
         return position;
     }
-    public int getUniform_number() {
+    public Integer getUniform_number() {
         return uniform_number;
     }
     public String getPrefecture() {
