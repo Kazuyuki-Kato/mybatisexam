@@ -13,7 +13,8 @@ public class PlayerService {
     public Player findPlayer(Integer id) {
         return this.playerMapper.findById(id).orElseThrow(() -> new PlayerNotFoundException("player not found"));
     }
-    public Player insert(String name, String position, Integer uniform_number, String prefecture) {
+
+    public Player insert(String name, String position, int uniform_number, String prefecture) {
         Player player = new Player(name, position, uniform_number, prefecture);
         playerMapper.insert(player);
         return player;
