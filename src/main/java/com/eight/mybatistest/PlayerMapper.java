@@ -13,7 +13,7 @@ public interface PlayerMapper {
     List<Player> findAll();
     @Select("SELECT * FROM players WHERE id = #{id}")
     Optional<Player> findById(Integer id);
-    @Insert("INSERT INTO players (name, position, uniform_number, prefecture) VALUES (#{name}, #{position}, #{uniform_number}, #{prefecture})")
+    @Insert("INSERT INTO players (name, position, uniform_number, prefecture) VALUES (#{name}, #{position}, #{uniformNumber}, #{prefecture})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(Player player);
 }

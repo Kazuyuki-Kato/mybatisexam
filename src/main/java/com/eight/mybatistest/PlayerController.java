@@ -22,7 +22,7 @@ public class PlayerController {
 
     @PostMapping("/players")
     public ResponseEntity<PlayerResponse> insert(@RequestBody @Validated PlayerRequest playerRequest, UriComponentsBuilder uriBuilder) {
-        Player player = playerService.insert(playerRequest.getName(), playerRequest.getPosition(), playerRequest.getUniform_number(), playerRequest.getPrefecture());
+        Player player = playerService.insert(playerRequest.getName(), playerRequest.getPosition(), playerRequest.getUniformNumber(), playerRequest.getPrefecture());
         URI location = uriBuilder.path("/players/{id}").buildAndExpand(player.getId()).toUri();
         PlayerResponse body = new PlayerResponse("player created");
         return ResponseEntity.created(location).body(body);
