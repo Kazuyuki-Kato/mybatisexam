@@ -9,13 +9,13 @@ public class PlayerRequest {
     @NotBlank
     private String position;
     @NotNull
-    private int uniform_number;
+    private int uniformNumber;
     @NotBlank
     private String prefecture;
-    public PlayerRequest(String name, String position, int uniform_number, String prefecture) {
+    public PlayerRequest(String name, String position, int uniformNumber, String prefecture) {
         this.name = name;
         this.position = position;
-        this.uniform_number = uniform_number;
+        this.uniformNumber = uniformNumber;
         this.prefecture = prefecture;
     }
 
@@ -26,7 +26,7 @@ public class PlayerRequest {
         return position;
     }
     public int getUniformNumber() {
-        return uniform_number;
+        return uniformNumber;
     }
     public String getPrefecture() {
         return prefecture;
