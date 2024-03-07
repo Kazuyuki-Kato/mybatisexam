@@ -1,44 +1,33 @@
 package com.eight.mybatistest;
 
-public class Player {
-    private Integer id;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+public class PlayerRequest {
+    @NotBlank
     private String name;
+    @NotBlank
     private String position;
+    @NotNull
     private int uniformNumber;
+    @NotBlank
     private String prefecture;
-
-    public Player(Integer id, String name, String position, int uniformNumber, String prefecture) {
-        this.id = id;
+    public PlayerRequest(String name, String position, int uniformNumber, String prefecture) {
         this.name = name;
         this.position = position;
         this.uniformNumber = uniformNumber;
         this.prefecture = prefecture;
-    }
-
-    public Player(String name, String position, int uniformNumber, String prefecture) {
-        this.id = null;
-        this.name = name;
-        this.position = position;
-        this.uniformNumber = uniformNumber;
-        this.prefecture = prefecture;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public String getName() {
         return name;
     }
-
     public String getPosition() {
         return position;
     }
-
     public int getUniformNumber() {
         return uniformNumber;
     }
-
     public String getPrefecture() {
         return prefecture;
     }
