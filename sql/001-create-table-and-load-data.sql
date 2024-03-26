@@ -4,7 +4,7 @@ CREATE TABLE players
     id INTEGER unsigned AUTO_INCREMENT,
     name VARCHAR(20) NOT NULL,
     position VARCHAR(15) NOT NULL,
-    uniform_number int(5) NOT NULL,
+    uniform_number VARCHAR(5) NOT NULL UNIQUE,
     prefecture VARCHAR(10) NOT NULL,
     PRIMARY KEY (id)
 );
