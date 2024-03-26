@@ -72,9 +72,9 @@ public class ExceptionControllerAdvise {
     @ExceptionHandler({SQLIntegrityConstraintViolationException.class})
     public ResponseEntity<ErrorResponse> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException e) {
         Map<String, String> body = Map.of(
-                "status", String.valueOf(HttpStatus.CONFLICT.value()),
-                "error", HttpStatus.CONFLICT.getReasonPhrase(),
-                "message", "その背番号は既に存在しています");
-        return new ResponseEntity(body, HttpStatus.CONFLICT);
+                "status", String.valueOf(HttpStatus.BAD_REQUEST.value()),
+                "error", HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                "message", "その背番号は既に使用されています");
+        return new ResponseEntity(body, HttpStatus.BAD_REQUEST);
     }
 }
