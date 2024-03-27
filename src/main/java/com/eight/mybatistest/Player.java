@@ -4,10 +4,10 @@ public class Player {
     private Integer id;
     private String name;
     private String position;
-    private int uniformNumber;
+    private String uniformNumber;
     private String prefecture;
 
-    public Player(Integer id, String name, String position, int uniformNumber, String prefecture) {
+    public Player(Integer id, String name, String position, String uniformNumber, String prefecture) {
         this.id = id;
         this.name = name;
         this.position = position;
@@ -15,7 +15,7 @@ public class Player {
         this.prefecture = prefecture;
     }
 
-    public Player(String name, String position, int uniformNumber, String prefecture) {
+    public Player(String name, String position, String uniformNumber, String prefecture) {
         this.id = null;
         this.name = name;
         this.position = position;
@@ -35,7 +35,7 @@ public class Player {
         return position;
     }
 
-    public int getUniformNumber() {
+    public String getUniformNumber() {
         return uniformNumber;
     }
 
