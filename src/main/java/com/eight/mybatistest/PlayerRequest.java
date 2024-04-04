@@ -17,6 +17,7 @@ public class PlayerRequest {
     @NotBlank
     @Pattern(regexp = "^[^\\u3000]*$")
     private String prefecture;
+
     public PlayerRequest(String name, String position, String uniformNumber, String prefecture) {
         this.name = name;
         this.position = position;
@@ -27,12 +28,15 @@ public class PlayerRequest {
     public String getName() {
         return name;
     }
+
     public String getPosition() {
         return position;
     }
+
     public String getUniformNumber() {
         return uniformNumber;
     }
+
     public String getPrefecture() {
         return prefecture;
     }
