@@ -23,6 +23,9 @@ public class Player {
         this.prefecture = prefecture;
     }
 
+    public Player() {
+    }
+
     public Integer getId() {
         return id;
     }
@@ -41,5 +44,22 @@ public class Player {
 
     public String getPrefecture() {
         return prefecture;
+    }
+
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public void setUniformNumber(String uniformNumber) {
+        this.uniformNumber = uniformNumber;
+    }
+
+    public void setPrefecture(String prefecture) {
+        this.prefecture = prefecture;
     }
 }
