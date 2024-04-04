@@ -22,7 +22,10 @@ public class Player {
         this.uniformNumber = uniformNumber;
         this.prefecture = prefecture;
     }
-    
+
+    public Player() {
+    }
+
     public Integer getId() {
         return id;
     }

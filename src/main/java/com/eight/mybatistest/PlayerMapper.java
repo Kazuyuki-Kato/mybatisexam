@@ -18,6 +18,6 @@ public interface PlayerMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(Player player);
 
-    @Update("UPDATE player SET name = #{name}, position = #{position}, uniformNumber = #{uniformNumber}, prefecture = #{prefecture} WHERE id = #{id}")
+    @Update("UPDATE players SET name = #{name}, position = #{position}, uniform_number = #{uniformNumber}, prefecture = #{prefecture} WHERE id = #{id}")
     void update(Player player);
 }

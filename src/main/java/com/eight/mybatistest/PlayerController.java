@@ -36,6 +36,6 @@ public class PlayerController {
         playerService.update(id, newPlayer.getName(), newPlayer.getPosition(), newPlayer.getUniformNumber(), newPlayer.getPrefecture());
         Map<String, String> response = new HashMap<>();
         response.put("message", "player updated");
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }
