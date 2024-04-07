@@ -1,5 +1,7 @@
 package com.eight.mybatistest;
 
+import jakarta.validation.constraints.AssertTrue;
+
 public class Player {
     private Integer id;
     private String name;
@@ -45,7 +47,6 @@ public class Player {
     public String getPrefecture() {
         return prefecture;
     }
-
 
     public void setName(String name) {
         this.name = name;
