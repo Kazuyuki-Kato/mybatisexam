@@ -38,4 +38,12 @@ public class PlayerController {
         response.put("message", "player updated");
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
+    @DeleteMapping("/players/{id}")
+    public ResponseEntity<Map<String, String>> deletePlayer(@PathVariable Integer id) {
+        playerService.delete(id);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "player deleted");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }

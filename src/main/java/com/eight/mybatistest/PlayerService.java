@@ -29,4 +29,8 @@ public class PlayerService {
         playerMapper.update(player);
         return player;
     }
+
+    public void delete(Integer id) {
+        playerMapper.delete(id);
+    }
 }
