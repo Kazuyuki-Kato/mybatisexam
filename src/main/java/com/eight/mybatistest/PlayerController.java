@@ -1,10 +1,5 @@
 package com.eight.mybatistest;
 
-<<<<<<< HEAD
-import jakarta.servlet.http.HttpServletRequest;
-=======
-import jakarta.validation.Valid;
->>>>>>> f7fa9e9e9fba1519b0dee3e7dcb7c5724c9edc76
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
