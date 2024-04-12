@@ -30,7 +30,8 @@ public class PlayerService {
         return player;
     }
 
-    public void delete(Integer id) {
+    public void deletePlayer(Integer id) {
+        playerMapper.findById(id).orElseThrow(() -> new PlayerNotFoundException("Player not found"));
         playerMapper.delete(id);
     }
 }
