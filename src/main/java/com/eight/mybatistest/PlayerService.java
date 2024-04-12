@@ -31,4 +31,9 @@ public class PlayerService {
         playerMapper.update(player);
         return player;
     }
+
+    public void deletePlayer(Integer id) {
+        playerMapper.findById(id).orElseThrow(() -> new PlayerNotFoundException("Player not found"));
+        playerMapper.delete(id);
+    }
 }
