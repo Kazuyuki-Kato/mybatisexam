@@ -4,7 +4,6 @@ import com.eight.mybatistest.PlayerNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @ControllerAdvice
-public class ExceptionControllerAdvise {
+public class ExceptionControllerAdvice {
     //*検索範囲外の数値で検索されたときに「player not found」を返すハンドリング
     @ExceptionHandler({PlayerNotFoundException.class})
     public ResponseEntity<Map<String, String>> handlePlayerNotFoundException(
@@ -37,7 +36,7 @@ public class ExceptionControllerAdvise {
         e.getBindingResult().getFieldErrors().forEach(fieldError -> {
             Map<String, String> error = new HashMap<>();
             error.put("field", fieldError.getField());
-            error.put("message", "文字を入力してください");
+            error.put("message", fieldError.getDefaultMessage());
             errors.add(error);
         });
         ErrorResponse errorResponse =

@@ -1,6 +1,10 @@
 package com.eight.mybatistest;
 
+<<<<<<< HEAD
 import jakarta.servlet.http.HttpServletRequest;
+=======
+import jakarta.validation.Valid;
+>>>>>>> f7fa9e9e9fba1519b0dee3e7dcb7c5724c9edc76
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -39,7 +43,7 @@ public class PlayerController {
     }
 
     @PatchMapping("/players/{id}")
-    public ResponseEntity<Map<String, String>> updatePlayer(@PathVariable Integer id, @RequestBody Player newPlayer) {
+    public ResponseEntity<Map<String, String>> updatePlayer(@PathVariable Integer id, @RequestBody @Validated PlayerRequest newPlayer) {
         playerService.update(id, newPlayer.getName(), newPlayer.getPosition(), newPlayer.getUniformNumber(), newPlayer.getPrefecture());
         Map<String, String> response = new HashMap<>();
         response.put("message", "player updated");
