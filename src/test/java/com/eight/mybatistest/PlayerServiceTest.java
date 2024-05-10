@@ -95,7 +95,7 @@ class PlayerServiceTest {
     }
 
     @Test
-    public void testDeletePlayer() {
+    public void 指定したIDで登録されているデータが問題なく削除されること() {
         // Given
         Integer id = 1;
         Player player = new Player(id, "山岡泰輔", "投手", "19", "広島県");
@@ -112,7 +112,7 @@ class PlayerServiceTest {
     }
 
     @Test
-    public void testDeletePlayer_PlayerNotFoundException() {
+    public void IDで指定したデータが存在しない時にエハンドリングしたエラーが表示されること() {
         // Given
         Integer id = 1;
 
