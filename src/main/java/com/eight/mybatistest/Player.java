@@ -1,6 +1,7 @@
 package com.eight.mybatistest;
 
-import jakarta.validation.constraints.AssertTrue;
+
+import java.util.Objects;
 
 public class Player {
     private Integer id;
@@ -23,6 +24,22 @@ public class Player {
         this.position = position;
         this.uniformNumber = uniformNumber;
         this.prefecture = prefecture;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return Objects.equals(name, player.name) &&
+                Objects.equals(position, player.position) &&
+                Objects.equals(uniformNumber, player.uniformNumber) &&
+                Objects.equals(prefecture, player.prefecture);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, position, uniformNumber, prefecture);
     }
 
     public Player() {

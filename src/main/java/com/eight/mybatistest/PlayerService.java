@@ -2,8 +2,6 @@ package com.eight.mybatistest;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class PlayerService {
     private final PlayerMapper playerMapper;
