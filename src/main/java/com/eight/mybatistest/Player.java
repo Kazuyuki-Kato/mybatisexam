@@ -36,7 +36,7 @@ public class Player {
                 Objects.equals(uniformNumber, player.uniformNumber) &&
                 Objects.equals(prefecture, player.prefecture);
     }
-
+    
     @Override
     public int hashCode() {
         return Objects.hash(name, position, uniformNumber, prefecture);
