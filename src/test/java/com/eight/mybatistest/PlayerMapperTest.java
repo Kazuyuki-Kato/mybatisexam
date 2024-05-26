@@ -40,6 +40,20 @@ class PlayerMapperTest {
     @Sql(scripts = {"classpath:/sqlannotation/delete-players.sql", "classpath:/sqlannotation/insert-players.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Transactional
+    public void IDで指定した選手の情報が正しく取得されること() {
+        // テスト: IDが1のプレイヤーを検索
+        Optional<Player> playerOptional = playerMapper.findById(1);
+        assertThat(playerOptional).isPresent(); // プレイヤーが存在することを確認
+        assertThat(playerOptional.get().getName()).isEqualTo("山岡泰輔"); // 名前が正しいことを確認
+        assertThat(playerOptional.get().getPosition()).isEqualTo("投手"); // ポジションが正しいことを確認
+        assertThat(playerOptional.get().getUniformNumber()).isEqualTo("19"); // ユニフォーム番号が正しいことを確認
+        assertThat(playerOptional.get().getPrefecture()).isEqualTo("広島県"); // 都道府県が正しいことを確認
+    }
+
+    @Test
+    @Sql(scripts = {"classpath:/sqlannotation/delete-players.sql", "classpath:/sqlannotation/insert-players.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Transactional
     public void 選手のデータを新しく登録できること() {
         // 新しいプレイヤーオブジェクトを作成
         Player player = new Player();
@@ -66,56 +80,34 @@ class PlayerMapperTest {
     @Sql(scripts = {"classpath:/sqlannotation/delete-players.sql", "classpath:/sqlannotation/insert-players.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Transactional
-    public void 登録された選手のデータが正しく更新できること() {
-        // 新しいプレイヤーオブジェクトを作成してデータベースに挿入
-        Player player = new Player();
-        player.setName("廣岡大志");
-        player.setPosition("内野手");
-        player.setUniformNumber("30");
-        player.setPrefecture("大阪府");
-        playerMapper.insert(player);
-
-        // 更新する情報を設定
-        player.setName("横山聖哉");
-        player.setPosition("内野手");
-        player.setUniformNumber("34");
-        player.setPrefecture("長野県");
-
-        // Updateを実行
+    public void IDで指定した選手の情報が正しく更新されること() {
+        // テスト: IDが2のプレイヤーの情報を更新
+        Player player = new Player(2, "阿部翔太", "投手", "20", "大阪府");
         playerMapper.update(player);
 
         // 更新後のプレイヤーを検索して取得
-        Optional<Player> updatedPlayerOptional = playerMapper.findById(player.getId());
-        assertThat(updatedPlayerOptional).isPresent(); // 更新後のプレイヤーが存在することを確認
-
-        Player updatedPlayer = updatedPlayerOptional.get();
-        assertThat(updatedPlayer.getName()).isEqualTo(player.getName()); // 名前が一致することを確認
-        assertThat(updatedPlayer.getPosition()).isEqualTo(player.getPosition()); // ポジションが一致することを確認
-        assertThat(updatedPlayer.getUniformNumber()).isEqualTo(player.getUniformNumber()); // ユニフォーム番号が一致することを確認
-        assertThat(updatedPlayer.getPrefecture()).isEqualTo(player.getPrefecture()); // 都道府県が一致することを確認
+        Optional<Player> updatedPlayerOptional = playerMapper.findById(2);
+        assertThat(updatedPlayerOptional).isPresent(); // プレイヤーが存在することを確認
+        assertThat(updatedPlayerOptional.get().getName()).isEqualTo("阿部翔太"); // 名前が更新されていることを確認
+        assertThat(updatedPlayerOptional.get().getPosition()).isEqualTo("投手"); // ポジションが更新されていることを確認
+        assertThat(updatedPlayerOptional.get().getUniformNumber()).isEqualTo("20"); // ユニフォーム番号が更新されていることを確認
+        assertThat(updatedPlayerOptional.get().getPrefecture()).isEqualTo("大阪府"); // 都道府県が更新されていることを確認
     }
 
     @Test
     @Sql(scripts = {"classpath:/sqlannotation/delete-players.sql", "classpath:/sqlannotation/insert-players.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Transactional
-    public void 登録された選手のデータが削除できること() {
-        // 新しいプレイヤーオブジェクトを作成してデータベースに挿入
-        Player player = new Player();
-        player.setName("鈴木博志");
-        player.setPosition("投手");
-        player.setUniformNumber("66");
-        player.setPrefecture("静岡県");
-        playerMapper.insert(player);
+    public void IDで指定した選手の情報が削除されること() {
+        // テスト: IDが3のプレイヤーを削除
+        playerMapper.delete(3);
 
-        // プレイヤーのIDを取得
-        Integer playerId = player.getId();
-
-        // Deleteを実行
-        playerMapper.delete(playerId);
-
-        // Delete後のプレイヤーを検索して取得
-        Optional<Player> deletedPlayerOptional = playerMapper.findById(playerId);
+        // プレイヤーが削除されたことを確認
+        Optional<Player> deletedPlayerOptional = playerMapper.findById(3);
         assertThat(deletedPlayerOptional).isEmpty(); // プレイヤーが存在しないことを確認
+
+        // プレイヤーが削除された後のリストのサイズが1つ減少していることを確認
+        List<Player> playersAfterDelete = playerMapper.findAll();
+        assertThat(playersAfterDelete.size()).isEqualTo(5); // プレイヤーの数が5であることを確認
     }
 }
