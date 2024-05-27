@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -43,11 +44,10 @@ class PlayerMapperTest {
     public void IDで指定した選手の情報が正しく取得されること() {
         // テスト: IDが1のプレイヤーを検索
         Optional<Player> playerOptional = playerMapper.findById(1);
-        assertThat(playerOptional).isPresent(); // プレイヤーが存在することを確認
-        assertThat(playerOptional.get().getName()).isEqualTo("山岡泰輔"); // 名前が正しいことを確認
-        assertThat(playerOptional.get().getPosition()).isEqualTo("投手"); // ポジションが正しいことを確認
-        assertThat(playerOptional.get().getUniformNumber()).isEqualTo("19"); // ユニフォーム番号が正しいことを確認
-        assertThat(playerOptional.get().getPrefecture()).isEqualTo("広島県"); // 都道府県が正しいことを確認
+        assertTrue(playerOptional.isPresent()); // プレイヤーが存在することを確認
+
+        Player expectedPlayer = new Player(1, "山岡泰輔", "投手", "19", "広島県");
+        assertThat(playerOptional.get()).isEqualTo(expectedPlayer);
     }
 
     @Test
@@ -67,13 +67,9 @@ class PlayerMapperTest {
 
         // InsertされたプレイヤーをIDで検索して取得
         Optional<Player> insertedPlayerOptional = playerMapper.findById(player.getId());
-        assertThat(insertedPlayerOptional).isPresent(); // Insertされたプレイヤーが存在することを確認
+        assertTrue(insertedPlayerOptional.isPresent()); // Insertされたプレイヤーが存在することを確認
 
-        Player insertedPlayer = insertedPlayerOptional.get();
-        assertThat(insertedPlayer.getName()).isEqualTo(player.getName()); // 名前が一致することを確認
-        assertThat(insertedPlayer.getPosition()).isEqualTo(player.getPosition()); // ポジションが一致することを確認
-        assertThat(insertedPlayer.getUniformNumber()).isEqualTo(player.getUniformNumber()); // ユニフォーム番号が一致することを確認
-        assertThat(insertedPlayer.getPrefecture()).isEqualTo(player.getPrefecture()); // 都道府県が一致することを確認
+        assertThat(insertedPlayerOptional.get()).isEqualTo(player);
     }
 
     @Test
@@ -87,11 +83,9 @@ class PlayerMapperTest {
 
         // 更新後のプレイヤーを検索して取得
         Optional<Player> updatedPlayerOptional = playerMapper.findById(2);
-        assertThat(updatedPlayerOptional).isPresent(); // プレイヤーが存在することを確認
-        assertThat(updatedPlayerOptional.get().getName()).isEqualTo("阿部翔太"); // 名前が更新されていることを確認
-        assertThat(updatedPlayerOptional.get().getPosition()).isEqualTo("投手"); // ポジションが更新されていることを確認
-        assertThat(updatedPlayerOptional.get().getUniformNumber()).isEqualTo("20"); // ユニフォーム番号が更新されていることを確認
-        assertThat(updatedPlayerOptional.get().getPrefecture()).isEqualTo("大阪府"); // 都道府県が更新されていることを確認
+        assertTrue(updatedPlayerOptional.isPresent()); // プレイヤーが存在することを確認
+
+        assertThat(updatedPlayerOptional.get()).isEqualTo(player);
     }
 
     @Test
