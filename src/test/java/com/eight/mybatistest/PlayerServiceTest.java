@@ -6,10 +6,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -25,6 +28,29 @@ class PlayerServiceTest {
     PlayerService playerService;
     @Mock
     PlayerMapper playerMapper;
+
+    @Test
+    void 全ての選手の情報が取得できること() {
+        // モックの振る舞いを設定
+        List<Player> expectedPlayers = Arrays.asList(
+                new Player(1, "山岡泰輔", "投手", "19", "広島県"),
+                new Player(2, "宮城大弥", "投手", "13", "沖縄県"),
+                new Player(3, "頓宮裕馬", "捕手", "44", "岡山県"),
+                new Player(4, "宗佑馬", "内野手", "6", "東京都"),
+                new Player(5, "紅林弘太郎", "内野手", "24", "静岡県"),
+                new Player(6, "T-岡田", "外野手", "55", "大阪府")
+        );
+
+        // モックのメソッドが呼ばれたときに期待される結果を設定
+        when(playerMapper.findAll()).thenReturn(expectedPlayers);
+
+        // テスト対象のメソッドを呼び出し
+        List<Player> actualPlayers = playerService.findAll();
+
+        // 期待される結果と実際の結果が一致するかを確認
+        assertEquals(expectedPlayers.size(), actualPlayers.size());
+        assertEquals(expectedPlayers, actualPlayers);
+    }
 
     @Test
     public void 存在するユーザーのIDを指定したときに正常にプレイヤーのデータが取得できる事() throws PlayerNotFoundException {

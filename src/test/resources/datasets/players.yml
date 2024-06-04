@@ -1,0 +1,31 @@
+players:
+  - id: 1
+    name: "山岡泰輔"
+    position: "投手"
+    uniform_Number: "19"
+    prefecture: "広島県"
+  - id: 2
+    name: "宮城大弥"
+    position: "投手"
+    uniform_Number: "13"
+    prefecture: "沖縄県"
+  - id: 3
+    name: "頓宮裕馬"
+    position: "捕手"
+    uniform_Number: "44"
+    prefecture: "岡山県"
+  - id: 4
+    name: "宗佑馬"
+    position: "内野手"
+    uniform_Number: "6"
+    prefecture: "東京都"
+  - id: 5
+    name: "紅林弘太郎"
+    position: "内野手"
+    uniform_Number: "24"
+    prefecture: "静岡県"
+  - id: 6
+    name: "T-岡田"
+    position: "外野手"
+    uniform_Number: "55"
+    prefecture: "大阪府"

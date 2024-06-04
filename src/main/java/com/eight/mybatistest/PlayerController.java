@@ -14,6 +14,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,6 +23,11 @@ public class PlayerController {
 
     public PlayerController(PlayerService playerService) {
         this.playerService = playerService;
+    }
+
+    @GetMapping("/players")
+    public List<Player> findAll() {
+        return playerService.findAll();
     }
 
     @GetMapping("/players/{id}")

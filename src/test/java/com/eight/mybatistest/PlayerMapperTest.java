@@ -1,5 +1,7 @@
 package com.eight.mybatistest;
 
+import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.spring.api.DBRider;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@DBRider
 @MybatisTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class PlayerMapperTest {
@@ -20,8 +23,7 @@ class PlayerMapperTest {
     PlayerMapper playerMapper;
 
     @Test
-    @Sql(scripts = {"classpath:/sqlannotation/delete-players.sql", "classpath:/sqlannotation/insert-players.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DataSet(value = "datasets/players.yml")
     @Transactional
     void 全てのプレイヤーの情報が取得できること() {
         List<Player> players = playerMapper.findAll();
@@ -38,8 +40,7 @@ class PlayerMapperTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/sqlannotation/delete-players.sql", "classpath:/sqlannotation/insert-players.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DataSet(value = "datasets/players.yml")
     @Transactional
     public void IDで指定した選手の情報が正しく取得されること() {
         // テスト: IDが1のプレイヤーを検索
@@ -51,8 +52,7 @@ class PlayerMapperTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/sqlannotation/delete-players.sql", "classpath:/sqlannotation/insert-players.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DataSet(value = "datasets/players.yml")
     @Transactional
     public void 選手のデータを新しく登録できること() {
         // 新しいプレイヤーオブジェクトを作成
@@ -73,8 +73,7 @@ class PlayerMapperTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/sqlannotation/delete-players.sql", "classpath:/sqlannotation/insert-players.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DataSet(value = "datasets/players.yml")
     @Transactional
     public void IDで指定した選手の情報が正しく更新されること() {
         // テスト: IDが2のプレイヤーの情報を更新
@@ -89,8 +88,7 @@ class PlayerMapperTest {
     }
 
     @Test
-    @Sql(scripts = {"classpath:/sqlannotation/delete-players.sql", "classpath:/sqlannotation/insert-players.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @DataSet(value = "datasets/players.yml")
     @Transactional
     public void IDで指定した選手の情報が削除されること() {
         // テスト: IDが3のプレイヤーを削除
