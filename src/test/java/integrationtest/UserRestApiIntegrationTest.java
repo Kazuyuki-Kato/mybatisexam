@@ -4,9 +4,12 @@ import com.eight.mybatistest.MybatisTestApplication;
 import com.eight.mybatistest.Player;
 import com.eight.mybatistest.PlayerMapper;
 import com.eight.mybatistest.PlayerRequest;
+import com.fasterxml.classmate.util.ClassStack;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.spring.api.DBRider;
+import org.apache.ibatis.executor.BaseExecutor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -98,7 +101,6 @@ public class UserRestApiIntegrationTest {
     @DataSet(value = "datasets/players.yml")
     @Transactional
     public void IDで指定した選手のデータが取得できること() throws Exception {
-        // Mocked Player object
         mockMvc.perform(get("/players/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{'id':1,'name':'山岡泰輔','position':'投手','uniformNumber':'19','prefecture':'広島県'}"));
@@ -108,7 +110,6 @@ public class UserRestApiIntegrationTest {
     @DataSet(value = "datasets/players.yml")
     @Transactional
     public void IDで指定した選手のデータがないときにエラーが返ること() throws Exception {
-        // Perform GET request to the endpoint for non-existing player and validate the response
         mockMvc.perform(get("/players/{id}", 10))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("player not found"));
@@ -117,6 +118,7 @@ public class UserRestApiIntegrationTest {
     @Test
     @DataSet(value = "datasets/players.yml")
     @Transactional
+    @ExpectedDataSet("datasets/expected-insertPlayer.yml")
     public void 選手の情報が追加できること() throws Exception {
         // Prepare player request
         PlayerRequest playerRequest = new PlayerRequest("アンダーソン・エスピノーザ", "投手", "00", "ベネズエラ");
@@ -131,12 +133,10 @@ public class UserRestApiIntegrationTest {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.message").value("player created"));
 
-        // Verify player is inserted into the database after existing players
         List<Player> players = playerMapper.findAll();
-        assertThat(players).hasSize(7); // Assuming there are 6 existing players
-        Player insertedPlayer = players.get(players.size() - 1); // Get the last player
+        assertThat(players).hasSize(7);
+        Player insertedPlayer = players.get(players.size() - 1);
 
-        // Assert the properties of the inserted player using content().json()
         mockMvc.perform(get("/players/{id}", insertedPlayer.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
@@ -152,11 +152,10 @@ public class UserRestApiIntegrationTest {
     @Test
     @DataSet(value = "datasets/players.yml")
     @Transactional
+    @ExpectedDataSet("datasets/expected-updatePlayer.yml")
     void idで指定した選手の情報が新しい情報で更新できること() throws Exception {
-        // Prepare updated player request
         PlayerRequest updatedPlayerRequest = new PlayerRequest("田嶋大樹", "投手", "29", "栃木県");
 
-        // Perform PATCH request to update the player with id = 1
         mockMvc.perform(patch("/players/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
@@ -170,7 +169,6 @@ public class UserRestApiIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("player updated"));
 
-        // Verify the player is updated in the database
         mockMvc.perform(get("/players/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
@@ -185,23 +183,22 @@ public class UserRestApiIntegrationTest {
     }
 
     @Test
-    @DataSet("datasets/players.yml")
+    @DataSet(value = "datasets/players.yml")
     @Transactional
+    @ExpectedDataSet("datasets/expected-deletePlayer.yml")
     void idで指定した選手の情報が削除されること() throws Exception {
-        // Perform DELETE request to delete player with id = 1
         mockMvc.perform(delete("/players/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("player deleted"));
 
-        // Verify player with id = 1 is deleted from the database
         mockMvc.perform(get("/players/{id}", 1))
                 .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
+    @DataSet(value = "datasets/players.yml")
     void idで指定した選手が存在しない時にPlayerNotFoundが返されること() throws Exception {
-        // Perform DELETE request to delete player with non-existing id = 100
         mockMvc.perform(delete("/players/{id}", 100))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value("Not Found"))
