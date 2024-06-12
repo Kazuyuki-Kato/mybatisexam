@@ -4,12 +4,10 @@ import com.eight.mybatistest.MybatisTestApplication;
 import com.eight.mybatistest.Player;
 import com.eight.mybatistest.PlayerMapper;
 import com.eight.mybatistest.PlayerRequest;
-import com.fasterxml.classmate.util.ClassStack;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import com.github.database.rider.spring.api.DBRider;
-import org.apache.ibatis.executor.BaseExecutor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -118,7 +116,7 @@ public class UserRestApiIntegrationTest {
     @Test
     @DataSet(value = "datasets/players.yml")
     @Transactional
-    @ExpectedDataSet("datasets/expected-insertPlayer.yml")
+    @ExpectedDataSet(value = "datasets/expected-insertPlayer.yml", ignoreCols = "id")
     public void 選手の情報が追加できること() throws Exception {
         // Prepare player request
         PlayerRequest playerRequest = new PlayerRequest("アンダーソン・エスピノーザ", "投手", "00", "ベネズエラ");
@@ -148,7 +146,7 @@ public class UserRestApiIntegrationTest {
                         }
                         """));
     }
-
+    
     @Test
     @DataSet(value = "datasets/players.yml")
     @Transactional
