@@ -118,10 +118,8 @@ public class UserRestApiIntegrationTest {
     @Transactional
     @ExpectedDataSet(value = "datasets/expected-insertPlayer.yml", ignoreCols = "id")
     public void 選手の情報が追加できること() throws Exception {
-        // Prepare player request
         PlayerRequest playerRequest = new PlayerRequest("アンダーソン・エスピノーザ", "投手", "00", "ベネズエラ");
-
-        // Perform POST request to insert a new player
+        
         ObjectMapper objectMapper = new ObjectMapper();
         String playerRequestJson = objectMapper.writeValueAsString(playerRequest);
 
@@ -146,7 +144,7 @@ public class UserRestApiIntegrationTest {
                         }
                         """));
     }
-    
+
     @Test
     @DataSet(value = "datasets/players.yml")
     @Transactional
