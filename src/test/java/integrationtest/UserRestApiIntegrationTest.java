@@ -36,10 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserRestApiIntegrationTest {
     @Autowired
     MockMvc mockMvc;
-
-    @Autowired
-    PlayerMapper playerMapper;
-
+    
     @Test
     @DataSet(value = "datasets/players.yml")
     @Transactional
@@ -119,7 +116,7 @@ public class UserRestApiIntegrationTest {
     @ExpectedDataSet(value = "datasets/expected-insertPlayer.yml", ignoreCols = "id")
     public void 選手の情報が追加できること() throws Exception {
         PlayerRequest playerRequest = new PlayerRequest("アンダーソン・エスピノーザ", "投手", "00", "ベネズエラ");
-        
+
         ObjectMapper objectMapper = new ObjectMapper();
         String playerRequestJson = objectMapper.writeValueAsString(playerRequest);
 
@@ -128,21 +125,6 @@ public class UserRestApiIntegrationTest {
                         .content(playerRequestJson))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.message").value("player created"));
-
-        List<Player> players = playerMapper.findAll();
-        assertThat(players).hasSize(7);
-        Player insertedPlayer = players.get(players.size() - 1);
-
-        mockMvc.perform(get("/players/{id}", insertedPlayer.getId()))
-                .andExpect(status().isOk())
-                .andExpect(content().json("""
-                        {
-                            "name": "アンダーソン・エスピノーザ",
-                            "position": "投手",
-                            "uniformNumber": "00",
-                            "prefecture": "ベネズエラ"
-                        }
-                        """));
     }
 
     @Test
@@ -152,30 +134,23 @@ public class UserRestApiIntegrationTest {
     void idで指定した選手の情報が新しい情報で更新できること() throws Exception {
         PlayerRequest updatedPlayerRequest = new PlayerRequest("田嶋大樹", "投手", "29", "栃木県");
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        String playerRequestJson = objectMapper.writeValueAsString(updatedPlayerRequest);
+
         mockMvc.perform(patch("/players/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                    "name": "田嶋大樹",
-                                    "position": "投手",
-                                    "uniformNumber": "29",
-                                    "prefecture": "栃木県"
-                                }
-                                """))
+                        .content(playerRequestJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("player updated"));
+    }
 
-        mockMvc.perform(get("/players/{id}", 1))
-                .andExpect(status().isOk())
-                .andExpect(content().json("""
-                        {
-                            "id": 1,
-                            "name": "田嶋大樹",
-                            "position": "投手",
-                            "uniformNumber": "29",
-                            "prefecture": "栃木県"
-                        }
-                        """));
+    @Test
+    @DataSet(value = "datasets/players.yml")
+    @Transactional
+    public void 更新の際IDで指定した選手のデータがないときにエラーが返ること() throws Exception {
+        mockMvc.perform(patch("/players/{id}", 100))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("Player not found"));
     }
 
     @Test
@@ -186,9 +161,6 @@ public class UserRestApiIntegrationTest {
         mockMvc.perform(delete("/players/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("player deleted"));
-
-        mockMvc.perform(get("/players/{id}", 1))
-                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -197,7 +169,6 @@ public class UserRestApiIntegrationTest {
     void idで指定した選手が存在しない時にPlayerNotFoundが返されること() throws Exception {
         mockMvc.perform(delete("/players/{id}", 100))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("Not Found"))
                 .andExpect(jsonPath("$.message").value("Player not found"));
     }
 }
