@@ -1,8 +1,6 @@
 package integrationtest;
 
 import com.eight.mybatistest.MybatisTestApplication;
-import com.eight.mybatistest.Player;
-import com.eight.mybatistest.PlayerMapper;
 import com.eight.mybatistest.PlayerRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.database.rider.core.api.dataset.DataSet;
@@ -17,9 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
@@ -36,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UserRestApiIntegrationTest {
     @Autowired
     MockMvc mockMvc;
-    
+
     @Test
     @DataSet(value = "datasets/players.yml")
     @Transactional
@@ -145,12 +140,17 @@ public class UserRestApiIntegrationTest {
     }
 
     @Test
-    @DataSet(value = "datasets/players.yml")
     @Transactional
-    public void 更新の際IDで指定した選手のデータがないときにエラーが返ること() throws Exception {
-        mockMvc.perform(patch("/players/{id}", 100))
+    @DataSet(value = "datasets/players.yml")
+    void 更新の際idで指定した選手が存在しない時にPlayerNotFoundが返されること() throws Exception {
+        // リクエストボディの内容をJSON形式で定義する
+        String requestBody = "{ \"name\": \"齋藤響介\", \"position\": \"投手\", \"uniformNumber\": \"26\", \"prefecture\": \"栃木県\" }";
+
+        mockMvc.perform(patch("/players/{id}", 100)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("Player not found"));
+                .andExpect(jsonPath("$.message").value("player not found"));
     }
 
     @Test

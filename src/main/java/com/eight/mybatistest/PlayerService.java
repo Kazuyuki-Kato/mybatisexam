@@ -29,7 +29,9 @@ public class PlayerService {
 
     public Player update(Integer id, String name, String position, String uniformNumber, String prefecture) {
         Player player = this.findPlayer(id);
-        playerMapper.findById(id).orElseThrow(() -> new PlayerNotFoundException("Player not found"));
+        if (player == null) {
+            throw new PlayerNotFoundException("Player not found");
+        }
 
         player.setName(name);
         player.setPosition(position);
@@ -39,7 +41,6 @@ public class PlayerService {
 
         return player;
     }
-
 
     public void deletePlayer(Integer id) {
         playerMapper.findById(id).orElseThrow(() -> new PlayerNotFoundException("Player not found"));
