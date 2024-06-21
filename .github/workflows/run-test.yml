@@ -26,5 +26,38 @@ jobs:
         with:
           gradle-version: '8.5'
 
-      - name: Test with Gradle 8.5
-        run: gradle test
+      - name: Set up MySQL
+        uses: mysql/setup-mysql@v2
+        with:
+          mysql-version: '8.0'
+          username: ${{ secrets.MYSQL_USERNAME }}
+          password: ${{ secrets.MYSQL_PASSWORD }}
+          database: 'players'
+
+      - name: Configure application.properties
+        run: |
+          echo "spring.datasource.url=jdbc:mysql://localhost:3306/players" >> src/main/resources/application.properties
+          echo "spring.datasource.username=user" >> src/main/resources/application.properties
+          echo "spring.datasource.password=password" >> src/main/resources/application.properties
+
+      - name: Build with Gradle 8.5
+        run: |
+          wget https://services.gradle.org/distributions/gradle-8.5-bin.zip
+          unzip -qq gradle-8.5-bin.zip
+          export GRADLE_HOME=$PWD/gradle-8.5
+          export PATH=$GRADLE_HOME/bin:$PATH
+          gradle -v  # Verify Gradle version
+          
+          ./gradlew build
+
+      - name: Run tests
+        run: |
+          ./gradlew test integrationTest
+
+
+      - name: Publish Test Report
+        if: always()
+        uses: mikepenz/action-junit-report@v3
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          job_name: 'Test Report'
