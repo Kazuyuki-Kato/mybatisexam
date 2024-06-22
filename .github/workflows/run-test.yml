@@ -36,10 +36,9 @@ jobs:
 
       - name: Configure application.properties
         run: |
-          echo "spring.datasource.url=jdbc:mysql://localhost:3306/players" >> src/main/resources/application.properties
+          echo "spring.datasource.url=jdbc:mysql://localhost:3307/players" >> src/main/resources/application.properties
           echo "spring.datasource.username=user" >> src/main/resources/application.properties
           echo "spring.datasource.password=password" >> src/main/resources/application.properties
-
       - name: Build with Gradle 8.5
         run: |
           wget https://services.gradle.org/distributions/gradle-8.5-bin.zip
@@ -49,12 +48,9 @@ jobs:
           gradle -v  # Verify Gradle version
           
           ./gradlew build
-
       - name: Run tests
         run: |
           ./gradlew test integrationTest
-
-
       - name: Publish Test Report
         if: always()
         uses: mikepenz/action-junit-report@v3
