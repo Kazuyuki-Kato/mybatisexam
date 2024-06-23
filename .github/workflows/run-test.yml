@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: Test with Gradle
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  test:
 
     runs-on: ubuntu-latest
     permissions:
@@ -25,28 +25,29 @@ jobs:
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
         with:
           gradle-version: '8.5'
+
       - name: Build with Gradle 8.5
         run: gradle build
 
     mysql:
-      image: mysql:8.0 # MySQLのバージョン8.0のDockerイメージを使用
+      image: mysql:8.0
       env:
-        MYSQL_ROOT_PASSWORD: root_password # ルートユーザーのパスワード
-        MYSQL_DATABASE: players # 作成するデータベース名
-        MYSQL_USER: user # ユーザー名
-        MYSQL_PASSWORD: password # ユーザーのパスワード
+        MYSQL_ROOT_PASSWORD: root_password
+        MYSQL_DATABASE: players
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
       ports:
-        - 3307:3307 # ポートマッピング設定
-      options: >- # コンテナのヘルスチェック設定
+        - 3307:3307
+      options: >-
         --health-cmd="mysqladmin ping"
         --health-interval=10s
         --health-timeout=10s
         --health-retries=10
   steps:
-    - name: Show Docker containers # 実行中のDockerコンテナを表示
+    - name: Show Docker containers
       run: docker ps -a
 
-    - name: Show databases for user # ユーザーのデータベースを表示
+    - name: Show databases for user
       run: mysql --protocol=tcp -h localhost -P 3307 -u user -p password -e "SHOW DATABASES"
 
     - name: Publish Test Report
