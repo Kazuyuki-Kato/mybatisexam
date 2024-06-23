@@ -28,31 +28,30 @@ jobs:
       - name: Build with Gradle 8.5
         run: gradle build
 
-        services:
-          mysql:
-            image: mysql:8.0 # MySQLのバージョン8.0のDockerイメージを使用
-            env:
-              MYSQL_ROOT_PASSWORD: root_password # ルートユーザーのパスワード
-              MYSQL_DATABASE: players # 作成するデータベース名
-              MYSQL_USER: user # ユーザー名
-              MYSQL_PASSWORD: password # ユーザーのパスワード
-            ports:
-              - 3307:3307 # ポートマッピング設定
-            options: >- # コンテナのヘルスチェック設定
-              --health-cmd="mysqladmin ping"
-              --health-interval=10s
-              --health-timeout=10s
-              --health-retries=10
-          steps:
-            - name: Show Docker containers # 実行中のDockerコンテナを表示
-              run: docker ps -a
+    mysql:
+      image: mysql:8.0 # MySQLのバージョン8.0のDockerイメージを使用
+      env:
+        MYSQL_ROOT_PASSWORD: root_password # ルートユーザーのパスワード
+        MYSQL_DATABASE: players # 作成するデータベース名
+        MYSQL_USER: user # ユーザー名
+        MYSQL_PASSWORD: password # ユーザーのパスワード
+      ports:
+        - 3307:3307 # ポートマッピング設定
+      options: >- # コンテナのヘルスチェック設定
+        --health-cmd="mysqladmin ping"
+        --health-interval=10s
+        --health-timeout=10s
+        --health-retries=10
+  steps:
+    - name: Show Docker containers # 実行中のDockerコンテナを表示
+      run: docker ps -a
 
-            - name: Show databases for user # ユーザーのデータベースを表示
-              run: mysql --protocol=tcp -h localhost -P 3307 -u user -p password -e "SHOW DATABASES"
+    - name: Show databases for user # ユーザーのデータベースを表示
+      run: mysql --protocol=tcp -h localhost -P 3307 -u user -p password -e "SHOW DATABASES"
 
-      - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v3
-        if: always()
-        with:
-          report_paths: '**/build/test-results/test/TEST-*.xml'
-          job_name: 'Test Report'
+    - name: Publish Test Report
+      uses: mikepenz/action-junit-report@v3
+      if: always()
+      with:
+      report_paths: '**/build/test-results/test/TEST-*.xml'
+      job_name: 'Test Report'
