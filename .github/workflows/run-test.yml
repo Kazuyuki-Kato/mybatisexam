@@ -29,30 +29,9 @@ jobs:
       - name: Build with Gradle 8.5
         run: gradle build
 
-    mysql:
-      image: mysql:8.0
-      env:
-        MYSQL_ROOT_PASSWORD: root_password
-        MYSQL_DATABASE: players
-        MYSQL_USER: user
-        MYSQL_PASSWORD: password
-      ports:
-        - 3307:3307
-      options: >-
-        --health-cmd="mysqladmin ping"
-        --health-interval=10s
-        --health-timeout=10s
-        --health-retries=10
-  steps:
-    - name: Show Docker containers
-      run: docker ps -a
-
-    - name: Show databases for user
-      run: mysql --protocol=tcp -h localhost -P 3307 -u user -p password -e "SHOW DATABASES"
-
-    - name: Publish Test Report
-      uses: mikepenz/action-junit-report@v3
-      if: always()
-      with:
-      report_paths: '**/build/test-results/test/TEST-*.xml'
-      job_name: 'Test Report'
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          job_name: 'Test Report'
