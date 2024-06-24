@@ -37,6 +37,13 @@ jobs:
         with:
           gradle-version: '8.5'
 
+      - name: Run tests
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/players/useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+          SPRING_DATASOURCE_USERNAME: root
+          SPRING_DATASOURCE_PASSWORD: password
+        run: gradle test --info
+
       - name: Build with Gradle 8.5
         run: gradle build
 
@@ -47,13 +54,6 @@ jobs:
       - name: Wait for MySQL to be ready
         run: |
           dockerize -wait tcp://localhost:3307 -timeout 1m
-
-      - name: Run tests
-        env:
-          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/players/useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-          SPRING_DATASOURCE_USERNAME: root
-          SPRING_DATASOURCE_PASSWORD: password
-        run: gradle test --info
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
