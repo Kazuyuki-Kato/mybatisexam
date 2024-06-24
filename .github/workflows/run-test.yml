@@ -13,6 +13,16 @@ jobs:
     permissions:
       contents: read
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: players
+        ports:
+          - 3307:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -28,6 +38,17 @@ jobs:
 
       - name: Build with Gradle 8.5
         run: gradle build
+
+      - name: Wait for MySQL to be ready
+        run: |
+          dockerize -wait tcp://localhost:3307 -timeout 1m
+
+      - name: Run tests
+        env:
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/players?serverTimezone=UTC&useSSL=false
+          SPRING_DATASOURCE_USERNAME: root
+          SPRING_DATASOURCE_PASSWORD: password
+        run: gradle test --info
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
