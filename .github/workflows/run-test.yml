@@ -39,6 +39,10 @@ jobs:
       - name: Build with Gradle 8.5
         run: gradle build
 
+      - name: exec players-data.sql
+        run: |
+          mysql -h 127.0.0.1 --port 3307 -u root -p password_password -e "$(cat $(find ./ -name players-data.sql))"
+
       - name: Wait for MySQL to be ready
         run: |
           dockerize -wait tcp://localhost:3307 -timeout 1m
