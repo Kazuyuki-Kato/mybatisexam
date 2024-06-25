@@ -24,9 +24,9 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
       mybatis:
-        image: mybatis-test-db  # Replace with your MyBatis Docker image and tag
+        image: mybatis-test-db:latest
         ports:
-          - 8080:8080  # Adjust port if necessary
+          - 8080:8080
         options: --health-cmd="curl -s http://localhost:8080/actuator/health || exit 1" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
@@ -48,15 +48,15 @@ jobs:
 
       - name: Execute players-data.sql
         run: |
-          mysql -h 127.0.0.1 --port 3307 -u root -pp assword players < $(find ./ -name players-data.sql)
+          mysql -h 127.0.0.1 --port 3307 -u root -p password players < $(find ./ -name players-data.sql)
 
       - name: Wait for MySQL to be ready
         run: |
-          dockerize -wait tcp://localhost:3307 -timeout 1m
+          dockerized -wait tcp://localhost:3307 -timeout 1m
 
       - name: Wait for MyBatis to be ready
         run: |
-          dockerize -wait tcp://localhost:8080 -timeout 1m
+          dockerized -wait tcp://localhost:8080 -timeout 1m
 
       - name: Run tests
         env:
