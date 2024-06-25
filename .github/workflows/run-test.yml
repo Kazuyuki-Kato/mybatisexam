@@ -37,19 +37,19 @@ jobs:
         with:
           gradle-version: '8.5'
 
-      - name: Build with Gradle 8.5
-        run: gradle build
-
       # Start the Docker Compose services
       - name: Start Docker Compose
         run: docker-compose -f mybatis-test/docker-compose.yml up -d
 
       - name: Execute players-data.sql
         run: |
-          mysql -h 127.0.0.1 --port 3307 -u root -ppassword players < $(find ./ -name players-data.sql)
+          mysql -h 127.0.0.1 --port 3307 -u root -p password players < $(find ./ -name players-data.sql)
 
       - name: Wait for MySQL to be ready
         run: dockerize -wait tcp://localhost:3307 -timeout 1m
+
+      - name: Build with Gradle 8.5
+        run: gradle build
 
       - name: Run tests
         env:
