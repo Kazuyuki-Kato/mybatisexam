@@ -39,7 +39,7 @@ jobs:
 
       # Start the Docker Compose services
       - name: Start Docker Compose
-        run: docker-compose -f mybatis-test/docker-compose.yml up -d
+        run: docker-compose -f mybatis-test-db up -d
 
       - name: Execute players-data.sql
         run: |
