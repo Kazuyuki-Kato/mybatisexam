@@ -26,7 +26,7 @@ jobs:
       mybatis:
         image: mybatis-test-db  # Replace with your MyBatis Docker image and tag
         ports:
-          - 3007:3006  # Adjust port if necessary
+          - 8080:8080  # Adjust port if necessary
         options: --health-cmd="curl -s http://localhost:8080/actuator/health || exit 1" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
@@ -48,7 +48,7 @@ jobs:
 
       - name: Execute players-data.sql
         run: |
-          mysql -h 127.0.0.1 --port 3307 -u root -ppassword players < $(find ./ -name players-data.sql)
+          mysql -h 127.0.0.1 --port 3307 -u root -pp assword players < $(find ./ -name players-data.sql)
 
       - name: Wait for MySQL to be ready
         run: |
@@ -61,7 +61,7 @@ jobs:
       - name: Run tests
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/players?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-          SPRING_DATASOURCE_USERNAME: root
+          SPRING_DATASOURCE_USERNAME: players
           SPRING_DATASOURCE_PASSWORD: password
         run: gradle test --info
 
