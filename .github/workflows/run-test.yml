@@ -1,4 +1,4 @@
-name: Test with Gradle
+name: Test with Gradle and Docker Compose
 
 on:
   push:
@@ -15,13 +15,19 @@ jobs:
 
     services:
       mysql:
-        image: mysql:8.0.37
+        image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: players
         ports:
-          - 3307:3307
+          - 3307:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+      mybatis:
+        image: mybatis-test-db  # Replace with your MyBatis Docker image and tag
+        ports:
+          - 3007:3006  # Adjust port if necessary
+        options: --health-cmd="curl -s http://localhost:8080/actuator/health || exit 1" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - uses: actions/checkout@v4
@@ -42,15 +48,19 @@ jobs:
 
       - name: Execute players-data.sql
         run: |
-          mysql -h 127.0.0.1 --port 3307 -u root -p password players < $(find ./ -name players-data.sql)
+          mysql -h 127.0.0.1 --port 3307 -u root -ppassword players < $(find ./ -name players-data.sql)
 
       - name: Wait for MySQL to be ready
         run: |
           dockerize -wait tcp://localhost:3307 -timeout 1m
 
+      - name: Wait for MyBatis to be ready
+        run: |
+          dockerize -wait tcp://localhost:8080 -timeout 1m
+
       - name: Run tests
         env:
-          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/players/useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/players?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: password
         run: gradle test --info
