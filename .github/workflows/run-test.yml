@@ -13,16 +13,6 @@ jobs:
     permissions:
       contents: read
 
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_DATABASE: players
-        ports:
-          - 3307:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     steps:
       - uses: actions/checkout@v4
 
@@ -32,35 +22,16 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Docker run
+        run: docker compose up -d
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
         with:
           gradle-version: '8.5'
 
-      # Start the Docker Compose services
-      - name: Start Docker Compose
-        run: docker-compose -f mybatis-test-db up -d
-
-      - name: Execute players-data.sql
-        run: |
-          mysql -h 127.0.0.1 --port 3307 -u root -p password players < $(find ./ -name players-data.sql)
-
-      - name: Wait for MySQL to be ready
-        run: dockerize -wait tcp://localhost:3307 -timeout 1m
-
       - name: Build with Gradle 8.5
         run: gradle build
-
-      - name: Run tests
-        env:
-          SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/players?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-          SPRING_DATASOURCE_USERNAME: user  # データベースのユーザー名に合わせて修正
-          SPRING_DATASOURCE_PASSWORD: password  # データベースのパスワードに合わせて修正
-        run: gradle test --info
-
-      # Stop and remove the Docker Compose services
-      - name: Stop Docker Compose
-        run: docker-compose -f mybatis-test/docker-compose.yml down
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3
