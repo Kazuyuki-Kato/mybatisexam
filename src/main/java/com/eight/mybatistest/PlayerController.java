@@ -45,10 +45,16 @@ public class PlayerController {
 
     @PatchMapping("/players/{id}")
     public ResponseEntity<Map<String, String>> updatePlayer(@PathVariable Integer id, @RequestBody @Validated PlayerRequest newPlayer) {
-        playerService.update(id, newPlayer.getName(), newPlayer.getPosition(), newPlayer.getUniformNumber(), newPlayer.getPrefecture());
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "player updated");
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        try {
+            playerService.update(id, newPlayer.getName(), newPlayer.getPosition(), newPlayer.getUniformNumber(), newPlayer.getPrefecture());
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "player updated");
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (PlayerNotFoundException ex) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", "player not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
     }
 
     @DeleteMapping("/players/{id}")

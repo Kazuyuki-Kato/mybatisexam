@@ -3,6 +3,7 @@ package com.eight.mybatistest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlayerService {
@@ -28,11 +29,16 @@ public class PlayerService {
 
     public Player update(Integer id, String name, String position, String uniformNumber, String prefecture) {
         Player player = this.findPlayer(id);
+        if (player == null) {
+            throw new PlayerNotFoundException("Player not found");
+        }
+
         player.setName(name);
         player.setPosition(position);
         player.setUniformNumber(uniformNumber);
         player.setPrefecture(prefecture);
         playerMapper.update(player);
+
         return player;
     }
 
