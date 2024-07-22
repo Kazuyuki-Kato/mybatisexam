@@ -5,6 +5,146 @@
 オリックスバファローズの選手データを使用し、idをキーとして登録、読み取り、更新、削除を行います。
 カラムは「name」「position」「uniform_number」「prefecture」で、idは自動製番にしております。
 
+# 階層構造
+``` sh
+├─Dockerfile
+  ├─HELP.md
+  ├─README.md
+  ├─build
+  ├─build.gradle
+  │  ├─classes
+  │  │  ├─java
+  │  │  │  ├─main
+  │  │  │  │  ├─com
+  │  │  │  │  │  ├─eight
+  │  │  │  │  │  │  ├─mybatistest
+  │  │  │  │  │  │  │  ├─ExceptionControllerAdvice$ErrorResponse.class
+  │  │  │  │  │  │  │  ├─ExceptionControllerAdvice.class
+  │  │  │  │  │  │  │  ├─MybatisTestApplication.class
+  │  │  │  │  │  │  │  ├─Player.class
+  │  │  │  │  │  │  │  ├─PlayerController.class
+  │  │  │  │  │  │  │  ├─PlayerMapper.class
+  │  │  │  │  │  │  │  ├─PlayerNotFoundException.class
+  │  │  │  │  │  │  │  ├─PlayerRequest.class
+  │  │  │  │  │  │  │  ├─PlayerResponse.class
+  │  │  │  │  │  │  │  ├─PlayerService.class
+  │  │  │  ├─test
+  │  │  │  │  ├─com
+  │  │  │  │  │  ├─eight
+  │  │  │  │  │  │  ├─mybatistest
+  │  │  │  │  │  │  │  ├─MybatisTestApplicationTests.class
+  │  │  │  │  │  │  │  ├─PlayerMapperTest.class
+  │  │  │  │  │  │  │  ├─PlayerServiceTest.class
+  │  │  │  │  ├─integrationtest
+  │  │  │  │  │  ├─UserRestApiIntegrationTest.class
+  │  ├─generated
+  │  │  ├─sources
+  │  │  │  ├─annotationProcessor
+  │  │  │  │  ├─java
+  │  │  │  │  │  ├─main
+  │  │  │  │  │  ├─test
+  │  │  │  ├─headers
+  │  │  │  │  ├─java
+  │  │  │  │  │  ├─main
+  │  │  │  │  │  ├─test
+  │  ├─reports
+  │  │  ├─tests
+  │  │  │  ├─test
+  │  │  │  │  ├─classes
+  │  │  │  │  │  ├─integrationtest.UserRestApiIntegrationTest.html
+  │  │  │  │  ├─css
+  │  │  │  │  │  ├─base-style.css
+  │  │  │  │  │  ├─style.css
+  │  │  │  │  ├─index.html
+  │  │  │  │  ├─js
+  │  │  │  │  │  ├─report.js
+  │  │  │  │  ├─packages
+  │  │  │  │  │  ├─integrationtest.html
+  │  ├─resources
+  │  │  ├─main
+  │  │  │  ├─application.properties
+  │  │  │  ├─static
+  │  │  │  ├─templates
+  │  │  ├─test
+  │  │  │  ├─datasets
+  │  │  │  │  ├─expected-deletePlayer.yml
+  │  │  │  │  ├─expected-insertPlayer.yml
+  │  │  │  │  ├─expected-updatePlayer.yml
+  │  │  │  │  ├─players.yml
+  │  │  │  ├─dbunit.yml
+  │  ├─test-results
+  │  │  ├─test
+  │  │  │  ├─TEST-integrationtest.UserRestApiIntegrationTest.xml
+  │  │  │  ├─binary
+  │  │  │  │  ├─output.bin
+  │  │  │  │  ├─output.bin.idx
+  │  │  │  │  ├─results.bin
+  │  ├─tmp
+  │  │  ├─compileJava
+  │  │  │  ├─compileTransaction
+  │  │  │  │  ├─backup-dir
+  │  │  │  │  ├─stash-dir
+  │  │  │  │  │  ├─ExceptionControllerAdvice$ErrorResponse.class.uniqueId1
+  │  │  │  │  │  ├─ExceptionControllerAdvice.class.uniqueId0
+  │  │  │  ├─previous-compilation-data.bin
+  │  │  ├─compileTestJava
+  │  │  │  ├─compileTransaction
+  │  │  │  │  ├─backup-dir
+  │  │  │  │  ├─stash-dir
+  │  │  │  │  │  ├─UserRestApiIntegrationTest.class.uniqueId0
+  │  │  │  ├─previous-compilation-data.bin
+  │  │  ├─test
+  ├─conf
+  │  ├─mysql
+  │  │  ├─my.cnf
+  ├─docker-compose.yml
+  ├─gradle
+  │  ├─wrapper
+  │  │  ├─gradle-wrapper.jar
+  │  │  ├─gradle-wrapper.properties
+  ├─gradlew
+  ├─gradlew.bat
+  ├─settings.gradle
+  ├─sql
+  │  ├─players-data.sql
+  ├─src
+  │  ├─main
+  │  │  ├─java
+  │  │  │  ├─com
+  │  │  │  │  ├─eight
+  │  │  │  │  │  ├─mybatistest
+  │  │  │  │  │  │  ├─ExceptionControllerAdvice.java
+  │  │  │  │  │  │  ├─MybatisTestApplication.java
+  │  │  │  │  │  │  ├─Player.java
+  │  │  │  │  │  │  ├─PlayerController.java
+  │  │  │  │  │  │  ├─PlayerMapper.java
+  │  │  │  │  │  │  ├─PlayerNotFoundException.java
+  │  │  │  │  │  │  ├─PlayerRequest.java
+  │  │  │  │  │  │  ├─PlayerResponse.java
+  │  │  │  │  │  │  ├─PlayerService.java
+  │  │  ├─resources
+  │  │  │  ├─application.properties
+  │  │  │  ├─static
+  │  │  │  ├─templates
+  │  ├─test
+  │  │  ├─java
+  │  │  │  ├─com
+  │  │  │  │  ├─eight
+  │  │  │  │  │  ├─mybatistest
+  │  │  │  │  │  │  ├─MybatisTestApplicationTests.java
+  │  │  │  │  │  │  ├─PlayerMapperTest.java
+  │  │  │  │  │  │  ├─PlayerServiceTest.java
+  │  │  │  ├─integrationtest
+  │  │  │  │  ├─UserRestApiIntegrationTest.java
+  │  │  ├─resources
+  │  │  │  ├─datasets
+  │  │  │  │  ├─expected-deletePlayer.yml
+  │  │  │  │  ├─expected-insertPlayer.yml
+  │  │  │  │  ├─expected-updatePlayer.yml
+  │  │  │  │  ├─players.yml
+  │  │  │  ├─dbunit.yml
+```
+
 # 前提となるデータの登録
 - MySQLを使用。
 - テーブル名はplayers-data.sql
