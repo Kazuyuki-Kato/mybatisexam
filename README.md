@@ -66,6 +66,76 @@
 ![スクリーンショット (198)](https://github.com/user-attachments/assets/8dfcc26b-99bd-4851-afbf-3193725c3195)
 
 
+### テストについて
+- JUnit5、DBRiderを使用。
+- 単体テスト、データベーステスト、結合テストを実施。
+- GithubActionsを利用したCIの実装。
+### CIの実装
+- run-test.ymlに必要なコードを記載。
+``` sh
+name: Test with Gradle, Docker Compose, and MySQL
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Docker run
+        run: docker compose up -d
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+        with:
+          gradle-version: '8.5'
+
+      - name: Build with Gradle 8.5
+        run: gradle build
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+          job_name: 'Test Report'
+```
+
+## 単体テスト
+### Mapperテスト
+- DBRiderを使用し、players.ymlにMySQLに登録した内容と同じもの記述。
+- 結果として全件成功していることを確認。
+![スクリーンショット (199)](https://github.com/user-attachments/assets/9cd3dccd-737e-4db8-acbe-923e3638dee6)
+
+### 単体テスト
+- Mockitoを使用してplayerMapperをモック化。
+- 結果として全件成功していることを確認。
+![スクリーンショット (200)](https://github.com/user-attachments/assets/dab805bc-3291-4dd5-bef8-3979f67dc48a)
+
+### 結合テスト
+- @SpringBootTestを使用。
+- insert,update,deleteにはあらかじめそれぞれに対応するymlファイルを記述、datasets配下に設置。
+- 全件成功していることを確認。
+![スクリーンショット (201)](https://github.com/user-attachments/assets/01448ba3-8074-4895-992f-96c53834bf3a)
+
+
+
+
 
 
 
