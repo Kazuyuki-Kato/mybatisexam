@@ -19,11 +19,11 @@ public interface PlayerMapper {
     @Select("SELECT * FROM players WHERE id = #{id}")
     Optional<Player> findById(Integer id);
 
-    @Insert("INSERT INTO players (name, position, uniform_number, prefecture) VALUES (#{name}, #{position}, #{uniformNumber}, #{prefecture})")
+    @Insert("INSERT INTO players (last_Name, first_Name, position, uniform_number, prefecture) VALUES (#{lastName}, #{firstName}, #{position}, #{uniformNumber}, #{prefecture})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void insert(Player player);
 
-    @Update("UPDATE players SET name = #{name}, position = #{position}, uniform_number = #{uniformNumber}, prefecture = #{prefecture} WHERE id = #{id}")
+    @Update("UPDATE players SET last_Name = #{lastName}, first_Name = #{firstName}, position = #{position}, uniform_number = #{uniformNumber}, prefecture = #{prefecture} WHERE id = #{id}")
     void update(Player player);
 
     @Delete("DELETE FROM players WHERE id = #{id}")

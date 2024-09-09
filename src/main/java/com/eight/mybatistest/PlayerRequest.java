@@ -5,9 +5,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public class PlayerRequest {
+    @NotBlank(message = "苗字を入力してください")
+    @Pattern(regexp = "^[^\\s　]+$", message = "苗字には半角スペースや全角スペースは含めることができません")
+    private String lastName;
+
     @NotBlank(message = "名前を入力してください")
     @Pattern(regexp = "^[^\\s　]+$", message = "名前には半角スペースや全角スペースは含めることができません")
-    private String name;
+    private String firstName;
 
     @NotBlank(message = "ポジションを入力してください")
     @Pattern(regexp = "^[^\\s　]+$", message = "ポジションには半角スペースや全角スペースは含めることができません")
@@ -21,8 +25,9 @@ public class PlayerRequest {
     @Pattern(regexp = "^[^\\s　]+$", message = "出身地には半角スペースや全角スペースは含めることができません")
     private String prefecture;
 
-    public PlayerRequest(String name, String position, String uniformNumber, String prefecture) {
-        this.name = name;
+    public PlayerRequest(String lastName, String firstName, String position, String uniformNumber, String prefecture) {
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.position = position;
         this.uniformNumber = uniformNumber;
         this.prefecture = prefecture;
@@ -32,8 +37,12 @@ public class PlayerRequest {
 
     }
 
-    public String getName() {
-        return name;
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 
     public String getPosition() {
@@ -48,8 +57,12 @@ public class PlayerRequest {
         return prefecture;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public void setPosition(String position) {

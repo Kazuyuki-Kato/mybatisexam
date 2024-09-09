@@ -37,7 +37,7 @@ public class PlayerController {
 
     @PostMapping("/players")
     public ResponseEntity<PlayerResponse> insert(@RequestBody @Validated PlayerRequest playerRequest, UriComponentsBuilder uriBuilder) {
-        Player player = playerService.insert(playerRequest.getName(), playerRequest.getPosition(), playerRequest.getUniformNumber(), playerRequest.getPrefecture());
+        Player player = playerService.insert(playerRequest.getLastName(), playerRequest.getFirstName(), playerRequest.getPosition(), playerRequest.getUniformNumber(), playerRequest.getPrefecture());
         URI location = uriBuilder.path("/players/{id}").buildAndExpand(player.getId()).toUri();
         PlayerResponse body = new PlayerResponse("player created");
         return ResponseEntity.created(location).body(body);
@@ -45,7 +45,7 @@ public class PlayerController {
 
     @PatchMapping("/players/{id}")
     public ResponseEntity<Map<String, String>> updatePlayer(@PathVariable Integer id, @RequestBody @Validated PlayerRequest newPlayer) {
-        playerService.update(id, newPlayer.getName(), newPlayer.getPosition(), newPlayer.getUniformNumber(), newPlayer.getPrefecture());
+        playerService.update(id, newPlayer.getLastName(), newPlayer.getFirstName(), newPlayer.getPosition(), newPlayer.getUniformNumber(), newPlayer.getPrefecture());
         Map<String, String> response = new HashMap<>();
         response.put("message", "player updated");
         return ResponseEntity.status(HttpStatus.OK).body(response);

@@ -5,22 +5,26 @@ import java.util.Objects;
 
 public class Player {
     private Integer id;
-    private String name;
+    private String lastName;
+
+    private String firstName;
     private String position;
     private String uniformNumber;
     private String prefecture;
 
-    public Player(Integer id, String name, String position, String uniformNumber, String prefecture) {
+    public Player(Integer id, String lastName, String firstName, String position, String uniformNumber, String prefecture) {
         this.id = id;
-        this.name = name;
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.position = position;
         this.uniformNumber = uniformNumber;
         this.prefecture = prefecture;
     }
 
-    public Player(String name, String position, String uniformNumber, String prefecture) {
+    public Player(String lastName, String firstName, String position, String uniformNumber, String prefecture) {
         this.id = null;
-        this.name = name;
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.position = position;
         this.uniformNumber = uniformNumber;
         this.prefecture = prefecture;
@@ -31,15 +35,16 @@ public class Player {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Player player = (Player) o;
-        return Objects.equals(name, player.name) &&
+        return Objects.equals(lastName, player.lastName) &&
+                Objects.equals(firstName, player.firstName) &&
                 Objects.equals(position, player.position) &&
                 Objects.equals(uniformNumber, player.uniformNumber) &&
                 Objects.equals(prefecture, player.prefecture);
     }
-    
+
     @Override
     public int hashCode() {
-        return Objects.hash(name, position, uniformNumber, prefecture);
+        return Objects.hash(lastName, firstName, position, uniformNumber, prefecture);
     }
 
     public Player() {
@@ -49,8 +54,12 @@ public class Player {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 
     public String getPosition() {
@@ -65,8 +74,12 @@ public class Player {
         return prefecture;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public void setPosition(String position) {

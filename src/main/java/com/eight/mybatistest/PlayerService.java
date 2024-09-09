@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.SimpleTimeZone;
 
 @Service
 public class PlayerService {
@@ -21,16 +22,17 @@ public class PlayerService {
         return this.playerMapper.findById(id).orElseThrow(() -> new PlayerNotFoundException("player not found"));
     }
 
-    public Player insert(String name, String position, String uniformNumber, String prefecture) {
-        Player player = new Player(name, position, uniformNumber, prefecture);
+    public Player insert(String lastName, String firstName, String position, String uniformNumber, String prefecture) {
+        Player player = new Player(lastName, firstName, position, uniformNumber, prefecture);
         playerMapper.insert(player);
         return player;
     }
 
-    public Player update(Integer id, String name, String position, String uniformNumber, String prefecture) {
+    public Player update(Integer id, String lastName, String firstName, String position, String uniformNumber, String prefecture) {
         Player player = this.findPlayer(id);
 
-        player.setName(name);
+        player.setLastName(lastName);
+        player.setFirstName(firstName);
         player.setPosition(position);
         player.setUniformNumber(uniformNumber);
         player.setPrefecture(prefecture);
