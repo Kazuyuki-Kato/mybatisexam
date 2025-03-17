@@ -17,7 +17,6 @@ import java.util.Map;
 
 @ControllerAdvice
 public class ExceptionControllerAdvice {
-    //*検索範囲外の数値で検索されたときに「player not found」を返すハンドリング
     @ExceptionHandler({PlayerNotFoundException.class})
     public ResponseEntity<Map<String, String>> handlePlayerNotFoundException(
             PlayerNotFoundException e, HttpServletRequest request) {

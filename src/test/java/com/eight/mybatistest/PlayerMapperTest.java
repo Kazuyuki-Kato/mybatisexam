@@ -30,12 +30,12 @@ class PlayerMapperTest {
         assertThat(players)
                 .hasSize(6)
                 .contains(
-                        new Player("山岡泰輔", "投手", "19", "広島県"),
-                        new Player("宮城大弥", "投手", "13", "沖縄県"),
-                        new Player("頓宮裕馬", "捕手", "44", "岡山県"),
-                        new Player("宗佑馬", "内野手", "6", "東京都"),
-                        new Player("紅林弘太郎", "内野手", "24", "静岡県"),
-                        new Player("T-岡田", "外野手", "55", "大阪府")
+                        new Player("山岡", "泰輔", "投手", "19", "広島県"),
+                        new Player("宮城", "大弥", "投手", "13", "沖縄県"),
+                        new Player("頓宮", "裕馬", "捕手", "44", "岡山県"),
+                        new Player("宗", "佑馬", "内野手", "6", "東京都"),
+                        new Player("紅林", "弘太郎", "内野手", "24", "静岡県"),
+                        new Player("岡田", "貴弘", "外野手", "55", "大阪府")
                 );
     }
 
@@ -47,7 +47,7 @@ class PlayerMapperTest {
         Optional<Player> playerOptional = playerMapper.findById(1);
         assertTrue(playerOptional.isPresent()); // プレイヤーが存在することを確認
 
-        Player expectedPlayer = new Player(1, "山岡泰輔", "投手", "19", "広島県");
+        Player expectedPlayer = new Player(1, "山岡", "泰輔", "投手", "19", "広島県");
         assertThat(playerOptional.get()).isEqualTo(expectedPlayer);
     }
 
@@ -57,7 +57,8 @@ class PlayerMapperTest {
     public void 選手のデータを新しく登録できること() {
         // 新しいプレイヤーオブジェクトを作成
         Player player = new Player();
-        player.setName("西野真弘");
+        player.setLastName("西野");
+        player.setFirstName("真弘");
         player.setPosition("内野手");
         player.setUniformNumber("5");
         player.setPrefecture("東京都");
@@ -77,7 +78,7 @@ class PlayerMapperTest {
     @Transactional
     public void IDで指定した選手の情報が正しく更新されること() {
         // テスト: IDが2のプレイヤーの情報を更新
-        Player player = new Player(2, "阿部翔太", "投手", "20", "大阪府");
+        Player player = new Player(2, "阿部", "翔太", "投手", "20", "大阪府");
         playerMapper.update(player);
 
         // 更新後のプレイヤーを検索して取得
